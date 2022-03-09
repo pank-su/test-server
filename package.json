@@ -1,7 +1,7 @@
 {
   "name": "test-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Это тестовый сервер",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
