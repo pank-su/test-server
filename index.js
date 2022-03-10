@@ -20,13 +20,17 @@ app.post("/", function (request, response) { // Тестовый post-запро
     response.send("ok")
 })
 app.get("/get_file/:filename", function (request, response) { // Функция для получения файлов
-    // TODO Надо обезопасить данную функцию и сделать обработку ошибок
-    console.log(request.params.filename)
-    var file = fs.createReadStream('./' + request.params.filename);
-    var stat = fs.statSync('./' + request.params.filename);
-    response.setHeader('Content-Length', stat.size);
-    response.setHeader('Content-Type', 'application/pdf');
-    response.setHeader('Content-Disposition', 'attachment; filename=' + request.params.filename);
-    file.pipe(response);
+    try {
+        var file = fs.createReadStream('./documents/' + request.params.filename);
+        var stat = fs.statSync('./documents/' + request.params.filename);
+        response.setHeader('Content-Length', stat.size);
+        response.setHeader('Content-Type', 'application/pdf');
+        response.setHeader('Content-Disposition', 'attachment; filename=' + request.params.filename);
+        file.pipe(response);
+    } catch (e) {
+        response.status(400)
+        response.send("File not found")
+    }
+
 })
 app.listen(3000, "localhost")
