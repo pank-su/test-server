@@ -4,11 +4,15 @@
   "description": "Это тестовый сервер",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "forever index.js"
   },
   "dependencies": {
     "nodemon": "^2.0.15",
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "forever": "^4.0.3"
+  },
+  "repository": {
+    "url": "https://github.com/Cynep-SU/test-server.git"
   },
   "keywords": [],
   "author": "",
