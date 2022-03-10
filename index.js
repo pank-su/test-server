@@ -40,16 +40,21 @@ app.get("/docs_info/", function (request, response) {
 })
 
 app.get("/test/:test_num", function (request, response) {
-    let file_name = "./tests/" + request.params.test_num + ".json"
-    fs.readFile(file_name, 'utf-8', ((err, data) => {
-        if (err){
-            response.status(400)
-            response.send("Test not found")
-        } else{
-            response.header("Content-Type", "application/json")
-            response.send(data)
-        }
+    var sqlite3 = require('sqlite3').verbose();
+    var db = new sqlite3.Database('./db/db.db');
 
-    }))
+    db.serialize(function () {
+        db.get("select json from tests where id = ?",[request.params.test_num], function (err, table) {
+            if (err){
+                response.status(400)
+                response.send("Test not found")
+            } else{
+                response.header("Content-Type", "application/json")
+                console.log(table)
+                response.send(table)
+            }
+        });
+    });
+    db.close();
 })
 app.listen(8080, "localhost")
