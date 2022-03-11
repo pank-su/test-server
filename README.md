@@ -1,6 +1,7 @@
 # Cервер для хранения документов и тестов
 
 GET:
+- /<br>
 - /file/[filename]<br>
   Content-Type: application/pdf<br>
   Получаем файл pdf по имени файла filename
@@ -10,3 +11,6 @@ GET:
 - /test/:test_num/<br>
   Content-Type: application/json<br>
   Получаем тест по номеру test_num
+
+POST:
+- /<br>
