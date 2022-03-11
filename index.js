@@ -69,4 +69,4 @@ app.get("/test/:test_num", function (request, response) {
     db.close();
 })
 
-app.listen(8080, "localhost")
+app.listen(3000, '0.0.0.0')
