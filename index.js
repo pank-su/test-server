@@ -50,6 +50,13 @@ app.get("/tests", function (request, response) {
 
 })
 
+//Получение тестов
+app.get("/tests", function (request, response) {
+    fs.readFile("./data/tests.json", 'utf-8', ((err, data) => {
+        response.header("Content-Type", "application/json")
+        response.send(data)
+    }))
+})
 
 console.log("Server run 0.0.0.0:3000")
 app.listen(3000, '0.0.0.0')
