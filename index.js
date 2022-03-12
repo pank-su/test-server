@@ -42,8 +42,10 @@ app.get("/docs/:filename", function (request, response) { // Функция дл
 
 // Заглушка для метода получения информации о документе
 app.get("/docs/info", function (request, response) {
-    response.setHeader("Content-Type", "application/json")
-    response.send({"test": "test.pdf"})
+    fs.readFile("./data/documents.json", 'utf-8', ((err, data) => {
+        response.header("Content-Type", "application/json")
+        response.send(data)
+    }))
 })
 
 
