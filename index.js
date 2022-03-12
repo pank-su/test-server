@@ -3,6 +3,7 @@ const express = require("express")
 const bodyParser = require("body-parser");
 const fs = require("fs")
 const { transliter } = require('transliter');
+const path = require("path");
 
 const app = express()
 
@@ -12,6 +13,11 @@ app.use(
     })
 )
 app.use(bodyParser.json())
+
+// Страничка документации
+app.get("/", function (request, response){
+    response.sendFile(path.join(__dirname+ "/README.html"))
+})
 
 // Запросы с пустым методом
 app.get("/status", function (request, response) { // Тестовый get-запрос
