@@ -1,7 +1,0 @@
-POST http://localhost:3000/
-Content-Type: application/json
-
-{"test":  0}
-
-###
-
