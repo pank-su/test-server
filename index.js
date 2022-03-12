@@ -2,6 +2,7 @@
 const express = require("express")
 const bodyParser = require("body-parser");
 const fs = require("fs")
+const { transliter } = require('transliter');
 
 const app = express()
 
@@ -34,14 +35,14 @@ app.get("/docs/:filename", function (request, response) { // Функция дл
         let stat = fs.statSync('./documents/' + request.params.filename);
         response.setHeader('Content-Length', stat.size);
         response.setHeader('Content-Type', 'application/pdf');
-        response.setHeader('Content-Disposition', 'attachment; filename=' + request.params.filename);
+        response.setHeader('Content-Disposition', 'attachment; filename=' + transliter(request.params.filename));
         // Отсылаем файл
         file.pipe(response)
     })
 })
 
 // Заглушка для метода получения информации о документе
-app.get("/docs/info", function (request, response) {
+app.get("/docs", function (request, response) {
     fs.readFile("./data/documents.json", 'utf-8', ((err, data) => {
         response.header("Content-Type", "application/json")
         response.send(data)
