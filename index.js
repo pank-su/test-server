@@ -13,60 +13,43 @@ app.use(
 app.use(bodyParser.json())
 
 // Запросы с пустым методом
-app.get("/", function (request, response) { // Тестовый get-запрос
+app.get("/status", function (request, response) { // Тестовый get-запрос
     response.send('ok')
 })
 
-app.post("/", function (request, response) { // Тестовый post-запрос
+app.post("/status", function (request, response) { // Тестовый post-запрос
     console.log(request.body)
     response.send("ok")
 })
 
 
-app.get("/file/:filename", function (request, response) { // Функция для получения файлов
-    try {
-        // Получаем файл по имени
-        let file = fs.createReadStream('./documents/' + request.params.filename);
+app.get("/docs/:filename", function (request, response) { // Функция для получения файлов
+    // Получаем файл по имени
+    let file = fs.createReadStream('./documents/' + request.params.filename);
+    file.on('error', function (_) {
+        response.status(400)
+        response.send("File not found")
+    });
+    file.on('open', function (){
         let stat = fs.statSync('./documents/' + request.params.filename);
         response.setHeader('Content-Length', stat.size);
         response.setHeader('Content-Type', 'application/pdf');
         response.setHeader('Content-Disposition', 'attachment; filename=' + request.params.filename);
         // Отсылаем файл
-        file.pipe(response);
-    } catch (e) {
-        response.status(400)
-        response.send("File not found")
-    }
-
+        file.pipe(response)
+    })
 })
 
 // Заглушка для метода получения информации о документе
-app.get("/docs_info/", function (request, response) {
+app.get("/docs/info", function (request, response) {
     response.setHeader("Content-Type", "application/json")
     response.send({"test": "test.pdf"})
 })
 
-// Метод получения теста по номеру теста из бд
-app.get("/test/:test_num", function (request, response) {
+app.get("/tests", function (request, response) {
 
-    // Обращение к бд по пути
-    var sqlite3 = require('sqlite3').verbose();
-    var db = new sqlite3.Database('./db/db.db');
-
-    // SQL-запрос
-    db.serialize(function () {
-        db.get("select json from tests where id = ?", [request.params.test_num], function (err, table) {
-            if (err){
-                response.status(400)
-                response.send("Test not found")
-            } else{
-                response.header("Content-Type", "application/json")
-                response.send(table)
-            }
-        });
-    });
-
-    db.close();
 })
 
+
+console.log("Server run 0.0.0.0:3000")
 app.listen(3000, '0.0.0.0')
