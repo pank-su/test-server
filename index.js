@@ -46,9 +46,6 @@ app.get("/docs/info", function (request, response) {
     response.send({"test": "test.pdf"})
 })
 
-app.get("/tests", function (request, response) {
-
-})
 
 //Получение тестов
 app.get("/tests", function (request, response) {
